@@ -1,6 +1,6 @@
 @extends('layouts.app', [
     'class' => '',
-    'elementActive' => 'icons'
+    'elementActive' => 'leavetype'
 ])
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
 @section('content')
 <div class="content">
     <div class="row justify-content-center">
-        <div class="col-md-9 offset-md-2">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title d-inline-block" style="font-family: 'Montserrat', sans-serif;">Manage Leave Type</h4>
@@ -23,11 +23,10 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                    <div class="table">
+                        <table class="table table-striped">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>ID</th>
                                     <th>Leave Type</th>
                                     <th>Description</th>
                                     <th>Action</th>
@@ -36,8 +35,7 @@
                             <tbody>
                                 @foreach($leavetypes as $leavetype)
                                     <tr>
-                                        <td>{{$leavetype->id}} </td>
-                                        <td>{{$leavetype->leave_type}} </td>
+                                        <td>{{$leavetype->name}} </td>
                                         <td>{{$leavetype->description}} </td>
                                         <td>
                                             <button class="btn btn-primary btn-sm edit-btn" data-id="{{ $leavetype->id }}">Edit</button>
@@ -74,26 +72,6 @@
                         <label for="description">Description</label>
                         <input type="text" class="form-control" id="description" name="description" required>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="lastname">LastName</label>
-                        <input type="text" class="form-control" id="lastname" name="lastname" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <input type="text" class="form-control" id="gender" name="gender" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phonenumber">PhoneNumber</label>
-                        <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="department">Department</label>
-                        <input type="text" class="form-control" id="department" name="department" required>
-                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-info">Add LeaveType</button>
@@ -194,7 +172,7 @@
                 type: 'GET',
                 success: function(response) {
                     $('#edit_leavetype_id').val(response.id);
-                    $('#edit_leavetype').val(response.leavetype);
+                    $('#edit_leavetype').val(response.name);
                     $('#edit_description').val(response.description);
                     // $('#edit_lastname').val(response.lastname);
                     // $('#edit_gender').val(response.gender);

@@ -1,6 +1,6 @@
 @extends('layouts.app', [
     'class' => '',
-    'elementActive' => 'map'
+    'elementActive' => 'employees'
 ])
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
 @section('content')
 <div class="content">
     <div class="row justify-content-center">
-        <div class="col-md-9 offset-md-2">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title d-inline-block" style="font-family: 'Montserrat', sans-serif;">Manage Employees</h4>
@@ -23,11 +23,11 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                    <div class="table">
+                        <table class="table table-striped">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>ID</th>
+                                    {{-- <th>ID</th> --}}
                                     <th>First Name</th>
                                     <th>Middle Name</th>
                                     <th>Last Name</th>
@@ -41,7 +41,7 @@
                             <tbody>
                                 @foreach($employees as $employee)
                                     <tr>
-                                        <td>{{$employee->id}} </td>
+                                        {{-- <td>{{$employee->id}} </td> --}}
                                         <td>{{$employee->first_name}} </td>
                                         <td>{{$employee->middle_name}} </td>
                                         <td>{{$employee->last_name}} </td>
@@ -90,7 +90,11 @@
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender</label>
-                        <input type="text" class="form-control" id="gender" name="gender" required>
+                        <select type="text" class="form-control" id="gender" name="gender" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Others</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="address">Address</label>
@@ -101,8 +105,20 @@
                         <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
                     </div>
                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
                         <label for="department">Department</label>
-                        <input type="text" class="form-control" id="department" name="department" required>
+                        <select type="text" class="form-control" id="department" name="department" required>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->department_name }}">{{ $department->department_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -127,6 +143,7 @@
             <form id="editEmployeeForm">
                 <div class="modal-body">
                     <input type="hidden" id="edit_employee_id" name="id">
+                    <input type="hidden" id="edit_user_id" name="user_id">
                     <div class="form-group">
                         <label for="edit_firstname">FirstName</label>
                         <input type="text" class="form-control" id="edit_firstname" name="firstname" required>
@@ -141,7 +158,11 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_gender">Gender</label>
-                        <input type="text" class="form-control" id="edit_gender" name="gender" required>
+                        <select type="text" class="form-control" id="edit_gender" name="gender" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Others</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="edit_address">Address</label>
@@ -149,11 +170,24 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_phonenumber">PhoneNumber</label>
-                        <input type="text" class="form-control" id="edit_phonenumber" name="phonenumber" required>
+                        <input type="number" class="form-control" id="edit_phonenumber" name="phonenumber" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_department">Department</label>
-                        <input type="text" class="form-control" id="edit_department" name="department" required>
+                        <label for="eemail">Email</label>
+                        <input type="email" class="form-control" id="eemail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select type="text" class="form-control" id="department" name="department" required>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->department_name }}">{{ $department->department_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="epassword">Password</label>
+                        <input type="password" class="form-control" id="epassword" name="password">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -191,8 +225,8 @@
                     location.reload();
                 },
                 error: function(xhr) {
-                    console.log(xhr.responseText);
-                    Swal.fire('Error!', 'An error occurred. Please try again later.', 'error');
+                    var response = JSON.parse(xhr.responseText)
+                    Swal.fire('Error!', response.message, 'error');
                 }
             });
         });
@@ -203,19 +237,22 @@
                 url: '/employees/' + employee_id + '/edit',
                 type: 'GET',
                 success: function(response) {
-                    $('#edit_employee_id').val(response.id);
-                    $('#edit_firstname').val(response.firstname);
-                    $('#edit_middlename').val(response.middlename);
-                    $('#edit_lastname').val(response.lastname);
-                    $('#edit_gender').val(response.gender);
-                    $('#edit_address').val(response.address);
-                    $('#edit_phonenumber').val(response.phonenumber);
-                    $('#edit_department').val(response.department);
+                    console.log(response[0].first_name)
+                    $('#edit_user_id').val(response[0].id);
+                    $('#edit_employee_id').val(employee_id);
+                    $('#edit_firstname').val(response[0].first_name);
+                    $('#edit_middlename').val(response[0].middle_name);
+                    $('#edit_lastname').val(response[0].last_name);
+                    $('#edit_gender').val(response[0].gender);
+                    $('#edit_address').val(response[0].address);
+                    $('#edit_phonenumber').val(response[0].phone_number);
+                    $('#edit_department').val(response[0].department);
+                    $('#eemail').val(response[0].email);
                     $('#editEmployeeModal').modal('show'); 
                 },
                 error: function(xhr) {
-                    console.log(xhr.responseText);
-                    Swal.fire('Error!', 'An error occurred. Please try again later.', 'error');
+                    var msg = JSON.parse(xhr.responseText)
+                    Swal.fire('Error!', msg , 'error');
                 }
             });
         });
@@ -236,8 +273,8 @@
                     location.reload();
                 },
                 error: function(xhr) {
-                    console.log(xhr.responseText);
-                    Swal.fire('Error!', 'An error occurred. Please try again later.', 'error');
+                    var msg = JSON.parse(xhr.responseText)
+                    Swal.fire('Error!', msg.message , 'error');
                 }
             });
         });

@@ -18,24 +18,13 @@ class LeaveTypeController extends Controller
         $leavetype = LeaveType::findOrFail($id);  
 
         $validatedData = $request->validate([
-            'leave_type' => 'required|string|max:255',
+            'leavetype' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            // 'last_name' => 'required|string|max:255',
-            // 'gender' => 'required|string|max:255',
-            // 'address' => 'required|string|max:255',
-            // 'phone_number' => 'required|integer',
-            // 'department' => 'required|string|max:255',
-
         ]);
 
         
-        $leavetype->leave_type = $validatedData['leave_type'];
+        $leavetype->name = $validatedData['leavetype'];
         $leavetype->description = $validatedData['description'];
-        // $employee->last_name = $validatedData['last_name'];
-        // $employee->gender = $validatedData['gender'];
-        // $employee->address = $validatedData['address'];
-        // $employee->phone_number = $validatedData['phone_number'];
-        // $employee->department = $validatedData['department'];
         $leavetype->save();
 
         return response()->json($leavetype);
@@ -52,23 +41,14 @@ class LeaveTypeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'leave_type' => 'required|string|max:255',
+            'leavetype' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            // 'last_name' => 'required|string|max:255',
-            // 'gender' => 'required|string|max:255',
-            // 'address' => 'required|string|max:255',
-            // 'phone_number' => 'required|integer',
-            // 'department' => 'required|string|max:255',
         ]);
 
         $leavetype = new LeaveType();
-        $leavetype->leave_type = $validatedData['leave_type'];
+        $leavetype->name = $validatedData['leavetype'];
         $leavetype->description = $validatedData['description'];
-        // $employee->last_name = $validatedData['last_name'];
-        // $employee->gender = $validatedData['gender'];   
-        // $employee->address = $validatedData['address'];
-        // $employee->phone_number = $validatedData['phone_number'];
-        // $employee->department = $validatedData['department'];
+        $leavetype->user_id = auth()->id();
         $leavetype->save();
 
         return response()->json(['message' => 'LeaveType added successfully'], 200);

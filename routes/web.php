@@ -6,7 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\DepartmentController;
-
+use App\Http\Controllers\LeaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,27 +28,32 @@ Auth::routes();
 
 Auth::routes();
 
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
-Route::get('/leave-types', [LeaveTypeController::class, 'index']);
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->middleware('auth')->name('home');
+Route::get('/leave-types', [LeaveTypeController::class, 'index'])->middleware('auth');
 
 
-Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
-Route::get('/map', [EmployeeController::class, 'index'])->name('map');
-Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
-Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+Route::get('/users-leave', [LeaveController::class, 'index'])->middleware('auth')->name('leaves');
+Route::put('/users-leave/reject/{id}', [LeaveController::class, 'reject'])->middleware('auth')->name('rejectleaves');
+Route::put('/users-leave/approve/{id}', [LeaveController::class, 'approve'])->middleware('auth')->name('approveleaves');
 
-Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
-Route::get('/departments', [DepartmentController::class, 'index'])->name('profile.edit');
-Route::get('/departments/{id}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
-Route::put('/departments/{id}', [DepartmentController::class, 'update'])->name('departments.update');
-Route::delete('/departments/{id}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
 
-Route::post('/leavetypes', [LeaveTypeController::class, 'store'])->name('leavetypes.store');
-Route::get('/icons', [LeaveTypeController::class, 'index'])->name('icons');
-Route::get('/leavetypes/{id}/edit', [LeaveTypeController::class, 'edit'])->name('leavetypes.edit');
-Route::put('/leavetypes/{id}', [LeaveTypeController::class, 'update'])->name('leavetypes.update');
-Route::delete('/leavetypes/{id}', [LeaveTypeController::class, 'destroy'])->name('leavetypes.destroy');
+Route::post('/employees', [EmployeeController::class, 'store'])->middleware('auth')->name('employees.store');
+Route::get('/employee', [EmployeeController::class, 'index'])->middleware('auth')->name('employee');
+Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->middleware('auth')->name('employees.edit');
+Route::put('/employees/{id}', [EmployeeController::class, 'update'])->middleware('auth')->name('employees.update');
+Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->middleware('auth')->name('employees.destroy');
+
+Route::post('/departments', [DepartmentController::class, 'store'])->middleware('auth')->name('departments.store');
+Route::get('/departments', [DepartmentController::class, 'index'])->middleware('auth')->name('departments');
+Route::get('/departments/{id}/edit', [DepartmentController::class, 'edit'])->middleware('auth')->name('departments.edit');
+Route::put('/departments/{id}', [DepartmentController::class, 'update'])->middleware('auth')->name('departments.update');
+Route::delete('/departments/{id}', [DepartmentController::class, 'destroy'])->middleware('auth')->name('departments.destroy');
+
+Route::post('/leavetypes', [LeaveTypeController::class, 'store'])->middleware('auth')->name('leavetypes.store');
+Route::get('/leavetype', [LeaveTypeController::class, 'index'])->middleware('auth')->name('leavetype');
+Route::get('/leavetypes/{id}/edit', [LeaveTypeController::class, 'edit'])->middleware('auth')->name('leavetypes.edit');
+Route::put('/leavetypes/{id}', [LeaveTypeController::class, 'update'])->middleware('auth')->name('leavetypes.update');
+Route::delete('/leavetypes/{id}', [LeaveTypeController::class, 'destroy'])->middleware('auth')->name('leavetypes.destroy');
 
 
 
@@ -63,13 +68,19 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('{page}', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
+	Route::get('dashboard', ['as' => 'page.index', 'uses' => 'App\Http\Controllers\PageController@index']);
 });
 
 Route::post('/login', [LoginController::class, 'ajaxLogin'])->name('ajaxLogin');
 
 Route::post('/login', [LoginController::class, 'login'])->middleware('throttle_login');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 Route::post('google/login', [LoginController::class, 'verify_login_email'])->name('google.authorization');
 
 
+Route::get('/fileleave', '\App\Http\Controllers\LeaveController@fileleave')->name('fileleave');
+Route::post('/store', '\App\Http\Controllers\LeaveController@store')->name('storeleave');
+Route::post('/save', '\App\Http\Controllers\LeaveController@save')->name('saveleave');
+Route::get('/getleave/{id}', '\App\Http\Controllers\LeaveController@getleave')->name('getleave');
+Route::delete('/leave/delete/{id}', '\App\Http\Controllers\LeaveController@delete')->name('deleteleave');

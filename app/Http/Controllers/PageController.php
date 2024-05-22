@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
+use App\Models\Leave;
+use App\Models\LeaveType;
 
 class PageController extends Controller
 {
@@ -22,11 +25,29 @@ class PageController extends Controller
      * @param string $page
      * @return \Illuminate\View\View
      */
-    public function index(string $page)
+    public function index()
     {
-        if (view()->exists("pages.{$page}")) {
-            return view("pages.{$page}");
+        if(auth()->user()->role == 'admin'){
+            if (view()->exists("pages.dashboard")) {
+                $employees = Employee::all();
+                $leaves = Leave::leftJoin('users','users.id','=','leaves.user_id')->get();
+                $leavePending = Leave::where('status','pending')->count();
+                $leaveApproved = Leave::where('status','approved')->count();
+                return view('pages.dashboard',compact('employees','leaves','leavePending','leaveApproved'));
+            }
         }
+        if(auth()->user()->role == 'employee'){
+            if (view()->exists("users.dashboard")) {
+                // $employees = Employee::all();
+                $leaves = Leave::where('leaves.user_id','=', auth()->id())
+                                ->get();
+                $LeaveTypes = LeaveType::all();
+                // $leavePending = Leave::where('status','pending')->count();
+                // $leaveApproved = Leave::where('status','approved')->count();
+                return view('users.dashboard',compact('leaves','LeaveTypes'));
+            }
+        }
+        
 
         return abort(404);
     }

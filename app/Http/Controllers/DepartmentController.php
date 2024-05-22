@@ -56,9 +56,9 @@ class DepartmentController extends Controller
     }
 
     public function index()
-        {
-            $departments = Department::all();
-            return view('profile.edit', compact('departments'));
-        }
+    {
+        $departments = Department::all();
+        return view('profile.edit', compact('departments'));
+    }
 
 }

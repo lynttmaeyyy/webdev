@@ -83,13 +83,13 @@
                 </form>
                 <div class="card-footer">
                 <div class="text-center" style="margin-top: -20px;">
-            <form method="GET" action="{{ route('password.request') }}" style="display: inline;">
+            {{-- <form method="GET" action="{{ route('password.request') }}" style="display: inline;">
                 <button type="submit" class="btn btn-dark btn-round mr-1">{{ __('Forgot password') }}</button>
             </form>
             <div class="text-center" style="margin-top: -10px;">
             <form method="GET" action="{{ route('register') }}" style="display: inline;">
                 <button type="submit" class="btn btn-info btn-round">{{ __('Create Account') }}</button>
-            </form>
+            </form> --}}
 </div>
 
 
@@ -142,7 +142,7 @@
                     $("#SignBtn").prop("disabled", false);
 
                     if(response.status === 'success'){
-                        window.location.href = 'home';
+                        window.location.href = 'dashboard';
                     }else{
                         showAlert(response.message, 'danger');
                     }
@@ -175,7 +175,7 @@ $(document).ready(function(){
 
 
                 if(response.status === 'success'){
-                    window.location.href = 'home';
+                    window.location.href = 'dashboard';
                 }else{
                     showAlert(response.message, 'danger');
                 }
@@ -198,7 +198,7 @@ $(document).ready(function(){
 function handleLoginResponse(response) {
     if(response.status === 'success'){
         showAlert('Login Successfully!', 'success');
-        window.location.href = 'home';
+        window.location.href = '/dashboard';
     } else {
         showAlert(response.message, 'danger');
     }

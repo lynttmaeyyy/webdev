@@ -1,6 +1,6 @@
 @extends('layouts.app', [
     'class' => '',
-    'elementActive' => 'edit'
+    'elementActive' => 'editDepartment'
 ])
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
 @section('content')
 <div class="content">
     <div class="row justify-content-center">
-        <div class="col-md-9 offset-md-2">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title d-inline-block" style="font-family: 'Montserrat', sans-serif;">Manage Departments</h4>
@@ -23,11 +23,10 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table">
                         <table class="table table-bordered table-striped">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>ID</th>
                                     <th>Department Name</th>
                                     <th>Department ShortName</th>
                                     <th>Action</th>
@@ -36,7 +35,6 @@
                             <tbody>
                                 @foreach($departments as $department)
                                     <tr>
-                                        <td>{{$department->id}} </td>
                                         <td>{{$department->department_name}} </td>
                                         <td>{{$department->department_shortname}} </td>
                                         <td>
@@ -74,30 +72,10 @@
                         <label for="department_shortname">Department_ShortName</label>
                         <input type="text" class="form-control" id="department_shortname" name="department_shortname" required>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="lastname">LastName</label>
-                        <input type="text" class="form-control" id="lastname" name="lastname" required> -->
-                    <!-- </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <input type="text" class="form-control" id="gender" name="gender" required>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">Add Department</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phonenumber">PhoneNumber</label>
-                        <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="department">Department</label>
-                        <input type="text" class="form-control" id="department" name="department" required>
-                    </div>
-                </div> -->
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-info">Add Department</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
@@ -114,8 +92,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editDepartmentForm">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form id="editDepartmentForm">
                     <input type="hidden" id="edit_department_id" name="id">
                     <div class="form-group">
                         <label for="edit_department_name">Department_Name</label>
@@ -123,33 +101,14 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_department_shortname">Department_ShortName</label>
-                        <input type="text" class="form-control" id="edit_department_shortname" name="edit_department_shortname" required>
+                        <input type="text" class="form-control" id="edit_department_shortname" name="department_shortname" required>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="edit_lastname">LastName</label>
-                        <input type="text" class="form-control" id="edit_lastname" name="lastname" required>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Department</button>
                     </div>
-                    <div class="form-group">
-                        <label for="edit_gender">Gender</label>
-                        <input type="text" class="form-control" id="edit_gender" name="gender" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_address">Address</label>
-                        <input type="text" class="form-control" id="edit_address" name="address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_phonenumber">PhoneNumber</label>
-                        <input type="text" class="form-control" id="edit_phonenumber" name="phonenumber" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_department">Department</label>
-                        <input type="text" class="form-control" id="edit_department" name="department" required>
-                </div> -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update Department</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

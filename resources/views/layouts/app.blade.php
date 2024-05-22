@@ -41,7 +41,7 @@ The above copyright notice and this permission notice shall be included in all c
     <link href="/../css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/../demo/demo.css" rel="stylesheet" />
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -53,7 +53,7 @@ The above copyright notice and this permission notice shall be included in all c
     
     @auth()
         @include('layouts.page_templates.auth')
-        @include('layouts.navbars.fixed-plugin')
+        {{-- @include('layouts.navbars.fixed-plugin') --}}
     @endauth
     
     @guest
