@@ -2,6 +2,9 @@
     'class' => '',
     'elementActive' => 'employees'
 ])
+@php
+    use Illuminate\Support\Facades\Crypt;
+@endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -50,8 +53,8 @@
                                         <td>{{$employee->phone_number}} </td>
                                         <td>{{$employee->department}} </td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm edit-btn" data-id="{{ $employee->id }}">Edit</button>
-                                            <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $employee->id }}">Delete</button>
+                                            <button class="btn btn-primary btn-sm edit-btn" data-id="{{ Crypt::encryptString($employee->id) }}">Edit</button>
+                                            <button class="btn btn-danger btn-sm delete-btn" data-id="{{ Crypt::encryptString($employee->id) }}">Delete</button>
                                         </td>
                                     </tr>
                                 @endforeach

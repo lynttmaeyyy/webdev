@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\Employee;
 use App\Models\Department;
 use App\Models\User;
@@ -11,12 +12,14 @@ class EmployeeController extends Controller
 {
     public function edit($id)
     { 
+        $id = Crypt::decryptString($id);
         $employee = Employee::leftJoin('users','users.id','=','employees.user_id')->where('employees.id',$id)->get();
         return response()->json($employee);
     }
 
     public function update(Request $request, $id)
     {    
+        $id = Crypt::decryptString($id);
         $employee = Employee::findOrFail($id);  
 
         $validatedData = $request->validate([
@@ -51,6 +54,7 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     { 
+        $id = Crypt::decryptString($id);
         $employee = Employee::findOrFail($id);
         $employee->delete();
         
