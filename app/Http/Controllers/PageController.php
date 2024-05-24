@@ -30,7 +30,7 @@ class PageController extends Controller
         if(auth()->user()->role == 'admin'){
             if (view()->exists("pages.dashboard")) {
                 $employees = Employee::all();
-                $leaves = Leave::leftJoin('users','users.id','=','leaves.user_id')->get();
+                $leaves = Leave::leftJoin('users','users.id','=','leaves.user_id')->select('leaves.*','users.name')->get();
                 $leavePending = Leave::where('status','pending')->count();
                 $leaveApproved = Leave::where('status','approved')->count();
                 return view('pages.dashboard',compact('employees','leaves','leavePending','leaveApproved'));

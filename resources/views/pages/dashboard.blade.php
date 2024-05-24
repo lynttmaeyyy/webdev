@@ -124,7 +124,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-10">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -141,6 +141,7 @@
                                           <th>Leave Type</th>  
                                           <th>Status</th>  
                                           <th>Applied</th>  
+                                          <th>Action</th>  
                                     </thead>
                                     <tbody>
                                         @foreach ($leaves as $leave)
@@ -152,6 +153,9 @@
                                                 <td>{{ $leave->leave_type }}</td>
                                                 <td>{{ $leave->status }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($leave->created_at)->format('F d Y') }}</td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $leave->id }}">Delete</button>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -170,6 +174,37 @@
         $(document).ready(function() {
             // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
             demo.initChartsPages();
+        });
+
+        $('.delete-btn').click(function() {
+            var leavetype_id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this leave!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/leave/delete/' + leavetype_id,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire('Deleted!', response.message, 'success');
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText);
+                            Swal.fire('Error!', 'Failed to delete leave. Please try again later.', 'error');
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endpush

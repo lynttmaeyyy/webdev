@@ -160,7 +160,7 @@
                         },
                         error: function(xhr, status, error) {
                             console.log(xhr.responseText);
-                            Swal.fire('Error!', 'Failed to delete leavetype. Please try again later.', 'error');
+                            Swal.fire('Error!', 'Failed to delete leave. Please try again later.', 'error');
                         }
                     });
                 }
