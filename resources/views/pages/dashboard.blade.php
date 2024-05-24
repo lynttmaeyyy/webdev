@@ -92,7 +92,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="numbers">
-                                    <p class="">Employee</p>
+                                    <p class="">Employees</p>
                                 </div>
                                 <table class="table">
                                     <thead class="thead">
