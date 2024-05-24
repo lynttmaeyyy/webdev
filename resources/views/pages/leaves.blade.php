@@ -222,7 +222,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(response) {
-                            Swal.fire('Rejected!', response.message, 'success');
+                            Swal.fire('Approved!', response.message, 'success');
                             location.reload();
                         },
                         error: function(xhr, status, error) {
