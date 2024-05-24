@@ -52,9 +52,9 @@
                                         <td>{{$employee->address}} </td>
                                         <td>{{$employee->phone_number}} </td>
                                         <td>{{$employee->department}} </td>
-                                        <td>
+                                        <td class="d-flex">
                                             <button class="btn btn-primary btn-sm edit-btn" data-id="{{ Crypt::encryptString($employee->id) }}">Edit</button>
-                                            <button class="btn btn-danger btn-sm delete-btn" data-id="{{ Crypt::encryptString($employee->id) }}">Delete</button>
+                                            <button class="btn btn-danger btn-sm delete-btn ml-2" data-id="{{ Crypt::encryptString($employee->id) }}">Delete</button>
                                         </td>
                                     </tr>
                                 @endforeach

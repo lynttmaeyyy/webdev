@@ -49,9 +49,9 @@
                                         <td>{{$leave->leave_type}} </td>
                                         <td>{{ \Carbon\Carbon::parse($leave->created_at)->format('F d Y')}} </td>
                                         <td>{{$leave->status}} </td>
-                                        <td>
+                                        <td class="d-flex">
                                             <button class="btn btn-primary btn-sm approve-btn" data-id="{{ $leave->id }}">Approved</button>
-                                            <button class="btn btn-danger btn-sm reject-btn" data-id="{{ $leave->id }}">Reject</button>
+                                            <button class="btn btn-danger btn-sm reject-btn ml-2" data-id="{{ $leave->id }}">Reject</button>
                                         </td>
                                     </tr>
                                 @endforeach
