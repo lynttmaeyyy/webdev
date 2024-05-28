@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Leave;
 use App\Models\LeaveType;
+use Illuminate\Support\Carbon;
 
 class LeaveController extends Controller
 {
     function index(){
-        $leaves = Leave::leftJoin('users','users.id','=','leaves.user_id')->select('leaves.*','users.name')->get();
+        $leaves = Leave::leftJoin('users','users.id','=','leaves.user_id')
+                        ->leftJoin('leave_types','leave_types.id','=','leaves.leave_type')
+                        ->where('leaves.status','pending')
+                        ->select('leaves.*','users.name', 'leave_types.name as leavetypename')
+                        ->get();
         return view(
             'pages.leaves',
             compact('leaves')
@@ -42,8 +47,33 @@ class LeaveController extends Controller
     }
 
     function fileleave(){
-        $LeaveTypes = LeaveType::all();
-        return view( 'users.fileleave', compact('LeaveTypes'));
+
+        $now = now()->format('Y');
+        
+        $LeaveTypes = [];
+
+        $LeaveTypesarrays = LeaveType::all();
+        $Leaves = Leave::whereYear('created_at',$now)
+                        ->whereIn('status',['pending','approved'])
+                        ->count();
+        
+        foreach($LeaveTypesarrays as $LeaveTypesarray){
+            $totaltypeleave = Leave:: where('leaves.leave_type',$LeaveTypesarray->id)
+                                ->whereYear('leaves.created_at', $now)
+                                ->whereIn('status',['pending','approved'])
+                                ->count();
+
+            $leaveType = [
+                'id' => $LeaveTypesarray->id,
+                'name' => $LeaveTypesarray->name,
+                'remaining' => $LeaveTypesarray->numtype - $totaltypeleave,
+            ];
+
+            // $leaveTypes['name'] =  $LeaveTypesarray->name ;
+            // $leaveTypes['remaining'] =  $totaltypeleave ;
+            $LeaveTypes[] =  $leaveType ;
+        }
+        return view( 'users.fileleave', compact('LeaveTypes','Leaves'));
     }
 
     function store(){

@@ -30,7 +30,10 @@ class PageController extends Controller
         if(auth()->user()->role == 'admin'){
             if (view()->exists("pages.dashboard")) {
                 $employees = Employee::all();
-                $leaves = Leave::leftJoin('users','users.id','=','leaves.user_id')->select('leaves.*','users.name')->get();
+                $leaves = Leave::leftJoin('users','users.id','=','leaves.user_id')
+                                 ->leftJoin('leave_types','leave_types.id','=','leaves.leave_type')
+                                 ->select('leaves.*','users.name', 'leave_types.name as leavetypename')
+                                 ->get();
                 $leavePending = Leave::where('status','pending')->count();
                 $leaveApproved = Leave::where('status','approved')->count();
                 return view('pages.dashboard',compact('employees','leaves','leavePending','leaveApproved'));
@@ -39,7 +42,9 @@ class PageController extends Controller
         if(auth()->user()->role == 'employee'){
             if (view()->exists("users.dashboard")) {
                 // $employees = Employee::all();
-                $leaves = Leave::where('leaves.user_id','=', auth()->id())
+                $leaves = Leave::leftJoin('leave_types','leave_types.id','=','leaves.leave_type')
+                                ->select('leaves.*','leave_types.name as leavetypename')
+                                ->where('leaves.user_id','=', auth()->id())
                                 ->get();
                 $LeaveTypes = LeaveType::all();
                 // $leavePending = Leave::where('status','pending')->count();

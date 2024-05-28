@@ -28,6 +28,7 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Leave Type</th>
+                                    <th>No. Applicable</th>
                                     <th>Description</th>
                                     <th>Action</th>
                                 </tr>
@@ -36,6 +37,7 @@
                                 @foreach($leavetypes as $leavetype)
                                     <tr>
                                         <td>{{$leavetype->name}} </td>
+                                        <td>{{$leavetype->numtype}} </td>
                                         <td>{{$leavetype->description}} </td>
                                         <td class="d-flex">
                                             <button class="btn btn-primary btn-sm edit-btn" data-id="{{ $leavetype->id }}">Edit</button>
@@ -54,7 +56,7 @@
 
 
 <div class="modal fade" id="addLeaveTypeModal" tabindex="-1" aria-labelledby="addLeaveTypeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addLeaveTypeModalLabel">Add New LeaveType</h5>
@@ -69,13 +71,17 @@
                         <input type="text" class="form-control" id="leavetype" name="leavetype" required>
                     </div>
                     <div class="form-group">
+                        <label for="numtype">No. Applicable:</label>
+                        <input type="number" class="form-control" id="numtype" name="numtype" placeholder="Number of times an employee can apply for this leave (per year)" required>
+                    </div>
+                    <div class="form-group">
                         <label for="description">Description</label>
                         <input type="text" class="form-control" id="description" name="description" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-info">Add LeaveType</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">Add LeaveType</button>
                 </div>
             </form>
         </div>
@@ -98,6 +104,10 @@
                     <div class="form-group">
                         <label for="edit_leavetype">LeaveType</label>
                         <input type="text" class="form-control" id="edit_leavetype" name="leavetype" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_numtype">No. Applicable:</label>
+                        <input type="number" class="form-control" id="edit_numtype" name="numtype" placeholder="Number of times an employee can apply for this leave (per year)" required>
                     </div>
                     <div class="form-group">
                         <label for="edit_description">Description</label>
@@ -173,6 +183,7 @@
                 success: function(response) {
                     $('#edit_leavetype_id').val(response.id);
                     $('#edit_leavetype').val(response.name);
+                    $('#edit_numtype').val(response.numtype);
                     $('#edit_description').val(response.description);
                     // $('#edit_lastname').val(response.lastname);
                     // $('#edit_gender').val(response.gender);

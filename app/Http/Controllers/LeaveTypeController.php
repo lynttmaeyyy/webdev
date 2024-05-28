@@ -19,11 +19,13 @@ class LeaveTypeController extends Controller
 
         $validatedData = $request->validate([
             'leavetype' => 'required|string|max:255',
+            'numtype' => 'required|int',
             'description' => 'required|string|max:255',
         ]);
 
         
         $leavetype->name = $validatedData['leavetype'];
+        $leavetype->numtype = $validatedData['numtype'];
         $leavetype->description = $validatedData['description'];
         $leavetype->save();
 
@@ -42,11 +44,13 @@ class LeaveTypeController extends Controller
     {
         $validatedData = $request->validate([
             'leavetype' => 'required|string|max:255',
+            'numtype' => 'required|int',
             'description' => 'required|string|max:255',
         ]);
 
         $leavetype = new LeaveType();
         $leavetype->name = $validatedData['leavetype'];
+        $leavetype->numtype = $validatedData['numtype'];
         $leavetype->description = $validatedData['description'];
         $leavetype->user_id = auth()->id();
         $leavetype->save();

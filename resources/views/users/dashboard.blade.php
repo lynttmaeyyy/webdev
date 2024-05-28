@@ -30,7 +30,7 @@
                                                 <td>{{ \Carbon\Carbon::parse($leave->start_date)->format('F d Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($leave->end_date)->format('F d Y') }}</td>
                                                 <td>{{ $leave->reason }}</td>
-                                                <td>{{ $leave->leave_type }}</td>
+                                                <td>{{ $leave->leavetypename }}</td>
                                                 <td>{{ $leave->status }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($leave->created_at)->format('F d Y') }}</td>
                                                 <td>
@@ -74,7 +74,7 @@
                             <label for="leave_type" class="form-label">Leave type</label>
                             <select class="form-control" id="leave_type" name="leave_type">
                                 @foreach ($LeaveTypes as $LeaveType)
-                                    <option value="{{ $LeaveType->name }}">{{ $LeaveType->name }}</option>
+                                    <option value="{{ $LeaveType->id }}">{{ $LeaveType->name }}</option>
                                 @endforeach
                             </select>
                         </div>

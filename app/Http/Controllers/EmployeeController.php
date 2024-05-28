@@ -45,8 +45,8 @@ class EmployeeController extends Controller
 
         $user = User::find($employee->user_id);
         $user->email = $validatedData['email'];
-        if(!empty($validatedData['password'])){
-            $user->email = $validatedData['password'];
+        if(!empty($request->password)){
+            $user->password = $request->password;
         }
         $user->save();
         return response()->json($employee);

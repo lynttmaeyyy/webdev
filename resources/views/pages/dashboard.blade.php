@@ -150,7 +150,7 @@
                                                 <td>{{ \Carbon\Carbon::parse($leave->start_date)->format('F d Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($leave->end_date)->format('F d Y') }}</td>
                                                 <td>{{ $leave->reason }}</td>
-                                                <td>{{ $leave->leave_type }}</td>
+                                                <td>{{ $leave->leavetypename }}</td>
                                                 <td>{{ $leave->status }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($leave->created_at)->format('F d Y') }}</td>
                                                 <td>
