@@ -46,7 +46,16 @@ class EmployeeController extends Controller
         $user = User::find($employee->user_id);
         $user->email = $validatedData['email'];
         if(!empty($request->password)){
-            $user->password = $request->password;
+            $validatedData = $request->validate([
+                'password' => [
+                    'required',
+                    'min:5',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+                ],
+            ], [
+                'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one number.',
+            ]);
+            $user->password = $validatedData['password'];
         }
         $user->save();
         return response()->json($employee);
@@ -76,7 +85,13 @@ class EmployeeController extends Controller
             'email' => 'required|unique:users,email',
             'phonenumber' => 'required',
             'department' => 'required|string|max:255',
-            'password' => 'required',
+            'password' => [
+                'required',
+                'min:5',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+            ],
+        ], [
+            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one number.',
         ]);
 
         $user = new User();
